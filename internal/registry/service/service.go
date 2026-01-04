@@ -55,7 +55,13 @@ func (s *FileService) Upload(ctx context.Context, uuid, name string, size int64,
 	fileId := generateId(5) // генерируем айди
 
 	storagePath := filepath.Join("data/storage", uuid+".dat")
-	err := os.Rename(filepath.Join("data/tmp", uuid), storagePath)
+	err := os.MkdirAll(storagePath, 0755)
+
+	if err != nil {
+		return "", err
+	}
+
+	err = os.Rename(filepath.Join("data/tmp", uuid), storagePath)
 
 	if err != nil {
 		s.Logger.Error("error uploading a file", "error", err)
