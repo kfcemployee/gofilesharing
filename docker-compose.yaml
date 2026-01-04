@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  # Наш RPC сервис работы с базой и диском
+  registry:
+    build:
+      context: .
+      args:
+        SERVICE_NAME: registry
+    environment:
+      - STORAGE_PATH=/root/storage
+      - DB_PATH=/root/storage/registry.db
+    volumes:
+      # Пробрасываем папку data с твоего компа внутрь контейнера
+      - ./data/storage:/root/storage
+    networks:
+      - cloud_network
+
+  # Наш HTTP Gateway (входная точка)
+  gateway:
+    build:
+      context: .
+      args:
+        SERVICE_NAME: gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - REGISTRY_ADDR=registry:50051 # Обращаемся к registry по имени сервиса
+      - TMP_DIR=/root/tmp
+    depends_on:
+      - registry
+    volumes:
+      # Общие папки для обмена файлами
+      - ./data/storage:/root/storage
+      - ./data/tmp:/root/tmp
+    networks:
+      - cloud_network
+
+networks:
+  cloud_network:
+    driver: bridge

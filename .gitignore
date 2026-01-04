@@ -1,0 +1,15 @@
+/service
+/main
+/app-bin
+
+/data/
+/storage/
+/tmp/
+
+*.db
+
+/vendor/
+
+.vscode/
+.idea/
+*.log
