@@ -23,7 +23,7 @@ func main() {
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 
 	// настраиваем бд
-	db, err := sql.Open("sqlite3", os.Getenv("DB_PATH"))
+	db, err := sql.Open("sqlite3", "storage.db")
 	if err != nil {
 		logger.Error("failed to open db", "error", err)
 		os.Exit(1)

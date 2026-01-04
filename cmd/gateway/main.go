@@ -16,7 +16,7 @@ func main() {
 	lg := slog.New(slog.NewTextHandler(os.Stdout, nil))
 	slog.SetDefault(lg)
 
-	conn, err := grpc.NewClient(os.Getenv("REGISTRY_ADDR"), grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.NewClient("localhost:5051", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
